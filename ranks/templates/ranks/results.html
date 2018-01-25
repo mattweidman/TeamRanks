@@ -7,9 +7,11 @@
 
         <p>Users who submitted: {{ users }}</p>
 
-        <h2>Best group</h2>
+        <h2>Best groups</h2>
 
-        <p>{{ names }}</p>
+        {% for g in groupings %}
+        <p>Score {{ g.0 }}: {{ g.1 }}</p>
+        {% endfor %}
 
     </body>
 </html>

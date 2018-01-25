@@ -15,13 +15,18 @@ def index(request):
 
 def submit(request):
     user = request.POST['user']
-    print(user)
+
+    wtotal = 0.
     for name in names:
-        w = int(request.POST[name])
+        wtotal += float(request.POST[name])
+
+    for name in names:
+        w = float(request.POST[name]) / wtotal
         p = user + " " + name
         pref = Preference(prefid=p, user=user, choice=name, weight=w)
         print(pref.user)
         pref.save()
+    
     ctx = {"submitted": True}
     return render(request, 'ranks/index.html', ctx)
 
@@ -107,8 +112,8 @@ def results(request):
 
     combos = get_3C7()
     groupings = [combo_to_string(c) for c in combos]
-    scores = [grouping_score(c) for c in combos]
-    g = groupings[argmax(scores)]
+    scores = [int(grouping_score(c) * 1000)/1000 for c in combos]
+    g = (sorted(zip(scores, groupings))[::-1])[:3]
 
-    ctx = {"users": numusers, "names": g}
+    ctx = {"users": numusers, "groupings": g}
     return render(request, 'ranks/results.html', ctx)
