@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>Compilers Grouping</title>
+    </head>
+    <body>
+        <h1>Compilers Grouping</h1>
+
+        <p>Here's what to do: For every person in the list, put a number between 1 and 10. Put 10 if you really want to be with that person, or 1 if you hate them. Your numbers don't need to sum to anything or be exclusive.</p>
+
+        <p>The program will look at all 35 of the possible groupings. Each grouping has a "group score." For every pair of people in a group together (A, B), if A submitted a value of x for B and B submitted a value of y for A, then A and B will together increase the group score by (x+y). The program will chose the grouping with the highest group score.</p>
+
+        <p>Click <a href="/ranks/results">here</a> to see current results.</p>
+
+        <h2>Rankings form</h2>
+
+        {% if submitted %}
+
+        <p>Submitted.</p>
+
+        {% else %}
+
+        <form action="/ranks/submit" method="POST">
+        {% csrf_token %}
+            <p>Who are you? 
+            <select name="user">
+                {% for name in names %}
+                <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+            </select></p>
+
+            {% for name in names %}
+            <p>{{ name }}
+            <select name="{{ name }}">
+                {% for choice in nums %}
+                <option value="{{ choice }}">{{ choice }}</option>
+                {% endfor %}
+            </select></p>
+            {% endfor %}
+            <p></p>
+            <input type="submit" value="Submit">
+        </form>
+
+        {% endif %}
+        
+    </body>
+</html>
